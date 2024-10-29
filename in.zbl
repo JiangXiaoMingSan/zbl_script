@@ -1,0 +1,35 @@
+# LAMMPS input script to calculate energy of two atoms
+
+# 设置初始参数
+units metal
+dimension 3
+boundary p p p
+atom_style atomic
+
+
+read_data   03.dat
+
+mass 1          50.942  #V
+mass 2          92.906  #Nb
+mass 3          95.95   #Mo
+mass 4          180.95  #Ta
+mass 5          183.84  #W
+
+###--------------------Force Field-------------------------------
+
+pair_style        deepmd ./VNbMoTaW_all_task2.pb
+pair_coeff        * *
+
+# 计算能量
+
+
+thermo 1
+thermo_style custom step pe
+run 0  # 运行0步以计算能量而不进行最小化
+
+# 将能量输出到文件
+variable energy equal pe
+print  "${energy}"  append energies.txt 
+
+
+
